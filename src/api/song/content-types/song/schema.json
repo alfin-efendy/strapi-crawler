@@ -1,0 +1,42 @@
+{
+  "kind": "collectionType",
+  "collectionName": "songs",
+  "info": {
+    "singularName": "song",
+    "pluralName": "songs",
+    "displayName": "Song"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "id_external": {
+      "type": "string"
+    },
+    "explicit": {
+      "type": "boolean"
+    },
+    "duration_ms": {
+      "type": "biginteger"
+    },
+    "name": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "artists": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::artist.artist",
+      "inversedBy": "songs"
+    },
+    "music": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::music.music",
+      "mappedBy": "song"
+    }
+  }
+}

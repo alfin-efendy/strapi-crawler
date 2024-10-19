@@ -1,0 +1,46 @@
+{
+  "kind": "collectionType",
+  "collectionName": "musics",
+  "info": {
+    "singularName": "music",
+    "pluralName": "musics",
+    "displayName": "Music",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "url": {
+      "type": "string",
+      "unique": true,
+      "required": true
+    },
+    "song": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::song.song",
+      "inversedBy": "music"
+    },
+    "instrument": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "audios"
+      ]
+    },
+    "vocal": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "audios"
+      ]
+    },
+    "transcript": {
+      "type": "json"
+    }
+  }
+}

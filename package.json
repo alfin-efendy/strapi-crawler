@@ -6,7 +6,7 @@
   "scripts": {
     "build": "strapi build",
     "deploy": "strapi deploy",
-    "develop": "strapi develop",
+    "dev": "strapi develop",
     "seed:example": "node ./scripts/seed.js",
     "start": "strapi start",
     "strapi": "strapi"
@@ -15,15 +15,18 @@
     "@strapi/plugin-cloud": "5.1.0",
     "@strapi/plugin-users-permissions": "5.1.0",
     "@strapi/strapi": "5.1.0",
+    "axios": "^1.7.7",
     "fs-extra": "^10.0.0",
     "mime-types": "^2.1.27",
     "pg": "8.8.0",
+    "playwright": "^1.48.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.0.0",
     "styled-components": "^6.0.0"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
