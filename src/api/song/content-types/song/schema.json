@@ -4,7 +4,8 @@
   "info": {
     "singularName": "song",
     "pluralName": "songs",
-    "displayName": "Song"
+    "displayName": "Song",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -37,6 +38,11 @@
       "relation": "oneToOne",
       "target": "api::music.music",
       "mappedBy": "song"
+    },
+    "album": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::album.album"
     }
   }
 }

@@ -25,6 +25,12 @@
       "relation": "manyToMany",
       "target": "api::song.song",
       "mappedBy": "artists"
+    },
+    "album": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::album.album",
+      "inversedBy": "artists"
     }
   }
 }
