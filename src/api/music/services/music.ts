@@ -3,28 +3,47 @@
  */
 
 import { factories } from "@strapi/strapi";
+import { errors } from '@strapi/utils';
+
+const { ApplicationError } = errors;
 
 export default factories.createCoreService("api::music.music", ({ strapi }) =>  ({
   async create(params) {
     // Validate params
     const { artist, track } = params
     if (!artist || !track) {
-      console.warn("Artist or track not found");
-      return null;
+      throw new ApplicationError("Please Passing Data Artist & Track", {
+        status: 400,
+        code: "BAD_REQUEST",
+      });
     }
 
     // Get detail from Spotify and validate if not found
     const detail = await strapi.service("api::music.spotify").getDetail(artist, track);
     if (!detail) {
-      console.warn("Detail not found");
-      return null;
+      throw new ApplicationError("Music not found", {
+        status: 404,
+        code: "NOT_FOUND",
+      });
     }
+
+    const existing = await strapi.query("api::song.song").findOne({ where: { id_external: detail.id } });
+
+    if (existing) {
+      throw new ApplicationError("Music already exists", {
+        status: 409,
+        code: "CONFLICT",
+      });
+    }
+
     
     // Get URL from YouTube Music and validate if not found
     const url = await strapi.service("api::music.yt-music").getUrl(artist, track);
     if (!url) {
-      console.warn("URL not found");
-      return null;
+      throw new ApplicationError("Music not found", {
+        status: 404,
+        code: "NOT_FOUND",
+      });
     }
 
     const artists = detail.artists.map((artist) => ({
@@ -77,37 +96,6 @@ export default factories.createCoreService("api::music.music", ({ strapi }) =>  
       },
     }
 
-    const result = await super.create({data: music});
-
-    // const data = {
-    //   url,
-    //   song: {
-    //     name: detail.name,
-    //     duration: detail.durationMs,
-    //     explicit: detail.explicit,
-    //     album: {
-    //       name: detail.album.name,
-    //       releaseDate: detail.album.releaseDate,
-    //       releaseDatePrecision: detail.album.releaseDatePrecision,
-    //       image: detail.album.images[0].url,
-    //       artist: {
-    //         name: detail.album.artists[0].name,
-    //       },
-    //     },
-    //     artists: detail.artists.map((artist) => ({
-    //       id_external: artist.id,
-    //       name: artist.name,
-    //       type: artist.type,
-    //     })),
-    //   }
-    // }
-
-    // console.log("Data is: ", data);
-
-    // const result = await super.create({data: url});
-
-    // console.log("Song is: ", result);
-  
-    return result;
+    return await super.create({data: music});
   }
 }));
