@@ -9,7 +9,8 @@
     "dev": "strapi develop",
     "seed:example": "node ./scripts/seed.js",
     "start": "strapi start",
-    "strapi": "strapi"
+    "strapi": "strapi",
+    "playwright-install": "pnpm exec playwright install"
   },
   "dependencies": {
     "@strapi/plugin-cloud": "5.1.0",

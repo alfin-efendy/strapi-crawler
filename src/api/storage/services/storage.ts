@@ -4,18 +4,10 @@
 
 import utils from '@strapi/utils';
 import axios from 'axios';
-import * as fse from 'fs-extra';
 import * as stream from "stream";
-import * as os from 'os';
-import * as path from 'path';
 import mime from 'mime-types';
 
 const { ApplicationError } = utils.errors;
-
-const getServiceUpload = (name) => {
-  return strapi.plugin("upload").service(name);
-};
-
 
 export default () => ({
   async createFolder(parentFolder: string, folderName: string) {
