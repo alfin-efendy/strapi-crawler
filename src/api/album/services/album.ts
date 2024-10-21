@@ -32,8 +32,6 @@ export default factories.createCoreService('api::album.album', ({ strapi }) => (
       artists,
     }
 
-    return await super.create(album);
-
-    return null;
+    return await super.create({ data: album });
   }  
 }));
