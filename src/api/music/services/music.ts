@@ -35,8 +35,6 @@ export default factories.createCoreService("api::music.music", ({ strapi }) =>  
       });
     }
 
-    const albumCoverFile = await strapi.service("api::storage.storage").uploadFromUrl('albums', detail.album.name, detail.album.images[0].url, "cover");
-    
     // Get URL from YouTube Music and validate if not found
     const url = await strapi.service("api::music.yt-music").getUrl(artist, track);
     if (!url) {
@@ -65,13 +63,12 @@ export default factories.createCoreService("api::music.music", ({ strapi }) =>  
       id_external: detail.album.id,
       releaseDate: detail.album.releaseDate,
       releaseDatePrecision: detail.album.releaseDatePrecision,
-      image: albumCoverFile.id,
       artists: {
         connect: artistsConnected,
       },
     }
 
-    const albumConnected = await strapi.service("api::album.album").create({data: album});
+    const albumConnected = await strapi.service("api::album.album").createWithCover({data: album}, detail.album.images[0].url);
     
     const song = {
       name: detail.name,
