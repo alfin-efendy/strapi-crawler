@@ -1,0 +1,55 @@
+# Version control
+.git
+.gitignore
+
+# Node.js
+node_modules
+dist
+npm-debug.log
+yarn-error.log
+
+# Strapi build
+build
+.cache
+.strapi-updater.json
+
+# Strapi database files (if using SQLite)
+*.db
+*.db-journal
+
+# Environment variables
+.env
+.env.*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+.idea
+.vscode
+*.swp
+*.swo
+
+# Logs
+logs
+*.log
+
+# Temporary files
+tmp
+temp
+
+# Test coverage
+coverage
+
+# Playwright
+test-results
+playwright-report
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Others
+*.md
+LICENSE
