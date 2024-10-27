@@ -19,8 +19,6 @@ module.exports = {
       const {artist, track} = ctx.request.body;
       const song = await strapi.service('api::music.music').create({artist, track});
 
-      console.log("Song is: " ,song);
-
       return {
           message: "create music",
           song
@@ -34,7 +32,7 @@ module.exports = {
      */
 
     async find(ctx) {
-        return "Hello World";
+        return strapi.services.music.find(ctx.query);
     },
 
     /**
@@ -65,5 +63,20 @@ module.exports = {
 
     async delete(ctx) {
         return strapi.services.music.delete(ctx.params);
-    }
+    },
+
+    async getUnprocessed(ctx) {
+        const {results, pagination} = await strapi.service('api::music.music').unprocessed();
+
+        return {
+            results: results.map((music) => ({
+                id: music.id,
+                documentId: music.documentId,
+                url: music.url,
+                track: music.song.name,
+                artist: music.song.artists.map((artist) => artist.name).join(', ')
+            })),
+            pagination
+        };
+    },
 };

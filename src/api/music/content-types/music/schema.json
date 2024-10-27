@@ -4,7 +4,8 @@
   "info": {
     "singularName": "music",
     "pluralName": "musics",
-    "displayName": "Music"
+    "displayName": "Music",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -17,32 +18,37 @@
       "required": true
     },
     "music": {
-      "allowedTypes": [
-        "audios"
-      ],
-      "type": "media",
-      "multiple": false
-    },
-    "instrument": {
-      "allowedTypes": [
-        "audios"
-      ],
       "type": "media",
       "multiple": false,
-      "required": false
-    },
-    "vocal": {
+      "required": false,
       "allowedTypes": [
         "audios"
-      ],
+      ]
+    },
+    "instrument": {
       "type": "media",
-      "multiple": false
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "audios"
+      ]
+    },
+    "vocal": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "audios"
+      ]
     },
     "song": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::song.song",
       "inversedBy": "music"
+    },
+    "transcript": {
+      "type": "json"
     }
   }
 }

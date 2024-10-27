@@ -32,5 +32,13 @@ module.exports = {
         middlewares: [],
       },
     },
+    {
+      method: "GET",
+      path: "/music/unprocessed",
+      handler: "music.getUnprocessed",
+      config: {
+        middlewares: [],
+      },
+    },
   ],
 };

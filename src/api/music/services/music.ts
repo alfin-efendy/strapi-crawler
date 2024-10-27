@@ -94,5 +94,21 @@ export default factories.createCoreService("api::music.music", ({ strapi }) =>  
     }
 
     return await super.create({data: music});
-  }
+  },
+
+  async unprocessed() {
+    return await super.find({
+        where: { music: null },
+        populate: {
+            song: {
+              fields: ['name'],
+              populate: {
+                artists: {
+                  fields: ['name'],
+                },
+              },
+            }
+        }
+    });
+}
 }));

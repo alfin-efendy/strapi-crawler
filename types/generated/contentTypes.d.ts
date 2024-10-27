@@ -563,6 +563,7 @@ export interface ApiMusicMusic extends Struct.CollectionTypeSchema {
     singularName: 'music';
     pluralName: 'musics';
     displayName: 'Music';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -575,6 +576,7 @@ export interface ApiMusicMusic extends Struct.CollectionTypeSchema {
     instrument: Schema.Attribute.Media<'audios'>;
     vocal: Schema.Attribute.Media<'audios'>;
     song: Schema.Attribute.Relation<'oneToOne', 'api::song.song'>;
+    transcript: Schema.Attribute.JSON;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
