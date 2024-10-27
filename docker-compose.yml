@@ -1,0 +1,94 @@
+services:
+  traefik:
+    container_name: traefik
+    hostname: traefik
+    image: traefik:v3.1
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    command:
+      - "--global.checkNewVersion=true"
+      - "--global.sendAnonymousUsage=false"
+      - "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--api.dashboard=true"
+      - "--api.debug=true"
+      - "--providers.docker=true"
+      - "--providers.docker.endpoint=unix:///var/run/docker.sock"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entryPoints.web.address=:80"
+      - "--entryPoints.websecure.address=:443"
+      - "--serversTransport.insecureSkipVerify=true"
+      - "--certificatesResolvers.cloudflare.acme.email=alfin1993@gmail.com"
+      - "--certificatesResolvers.cloudflare.acme.storage=/ssl-certs/acme.json"
+      - "--certificatesresolvers.cloudflare.acme.dnschallenge=true"
+      - "--certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare"
+      - "--certificatesresolvers.cloudflare.acme.dnschallenge.delaybeforecheck=0"
+      - "--certificatesresolvers.cloudflare.acme.dnschallenge.resolvers=1.1.1.1:53,8.8.8.8:53"
+    volumes:
+      - traefik-ssl-certs:/ssl-certs
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      TZ: Asia/Jakarta
+      CLOUDFLARE_EMAIL: alfin1993@gmail.com
+      CLOUDFLARE_DNS_API_TOKEN: 8MWfIUlLhU5VFGWzDc0RJ3-UbvhRegLmJ7sMwvfh
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.home-project.online`)"
+      - "traefik.http.routers.traefik.entrypoints=web"
+      - "traefik.http.routers.traefik-secure.rule=Host(`traefik.home-project.online`)"
+      - "traefik.http.routers.traefik-secure.entrypoints=websecure"
+      - "traefik.http.routers.traefik-secure.service=api@internal"
+      - "traefik.http.routers.traefik-secure.tls=true"
+      - "traefik.http.routers.traefik-secure.tls.certresolver=cloudflare"
+      - "traefik.http.routers.traefik.middlewares=https-redirect"
+      - "traefik.http.middlewares.https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.ssl-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
+
+  portainer:
+    container_name: portainer
+    hostname: portainer
+    image: portainer/portainer-ce:2.21.3
+    command: -H unix:///var/run/docker.sock
+    restart: always
+    expose:
+      - "9000"
+      - "8000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portainer.rule=Host(`portainer.home-project.online`)"
+      - "traefik.http.routers.portainer.entrypoints=websecure"
+      - "traefik.http.routers.portainer.tls.certresolver=cloudflare"
+      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+
+  strapi:
+    container_name: strapi
+    hostname: strapi
+    image: ghcr.io/alfin-efendy/strapi-crawler:master
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.strapi.rule=Host(`strapi.home-project.online`)"
+      - "traefik.http.routers.strapi.entrypoints=websecure"
+      - "traefik.http.routers.strapi.tls.certresolver=cloudflare"
+      - "traefik.http.services.strapi.loadbalancer.server.port=1337"
+
+
+  watchtower:
+    container_name: watchtower
+    hostname: watchtower
+    image: containrrr/watchtower
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - /root/.docker/config.json:/config.json
+    command: --interval 30
+
+volumes:
+  portainer_data:
+  traefik-ssl-certs:
+    driver: local

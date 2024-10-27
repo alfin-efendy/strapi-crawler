@@ -96,7 +96,7 @@ module.exports = {
   async getDetail(artist: string, track: string) : Promise<SpotifyTrack | null> {
     const response = await apiSpotify
       .get<SpotifyTrack[]>(
-        `/search?q=track%253A${track}%2520artist%253A${artist}&type=track&limit=1`
+        `/search?q=track%253A${track}%2520artist%253A${artist}&type=track&limit=50`
       )
       .then((res) => res["tracks"].items)
       .catch((error) => console.error("Get track detail error:", error));
@@ -105,6 +105,10 @@ module.exports = {
       return null;
     }
 
-    return response[0];
+    for (const item of response) {
+      if (item.name.toLowerCase() === track.toLowerCase()) {
+        return item;
+      }
+    }
   },
 };
