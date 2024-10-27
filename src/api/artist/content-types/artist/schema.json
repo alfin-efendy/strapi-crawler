@@ -11,26 +11,23 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "id_external": {
-      "type": "string"
-    },
     "name": {
       "type": "string"
     },
-    "type": {
+    "id_external": {
       "type": "string"
+    },
+    "albums": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::album.album",
+      "inversedBy": "artists"
     },
     "songs": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::song.song",
       "mappedBy": "artists"
-    },
-    "album": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::album.album",
-      "inversedBy": "artists"
     }
   }
 }

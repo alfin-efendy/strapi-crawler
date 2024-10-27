@@ -501,18 +501,18 @@ export interface ApiAlbumAlbum extends Struct.CollectionTypeSchema {
     singularName: 'album';
     pluralName: 'albums';
     displayName: 'Album';
+    description: '';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
     name: Schema.Attribute.String;
-    type: Schema.Attribute.String;
     id_external: Schema.Attribute.String;
     release_date: Schema.Attribute.String;
     release_date_precision: Schema.Attribute.String;
     image: Schema.Attribute.Media<'images'>;
-    artists: Schema.Attribute.Relation<'oneToMany', 'api::artist.artist'>;
+    artists: Schema.Attribute.Relation<'manyToMany', 'api::artist.artist'>;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -537,11 +537,10 @@ export interface ApiArtistArtist extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    id_external: Schema.Attribute.String;
     name: Schema.Attribute.String;
-    type: Schema.Attribute.String;
+    id_external: Schema.Attribute.String;
+    albums: Schema.Attribute.Relation<'manyToMany', 'api::album.album'>;
     songs: Schema.Attribute.Relation<'manyToMany', 'api::song.song'>;
-    album: Schema.Attribute.Relation<'manyToOne', 'api::album.album'>;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -564,19 +563,18 @@ export interface ApiMusicMusic extends Struct.CollectionTypeSchema {
     singularName: 'music';
     pluralName: 'musics';
     displayName: 'Music';
-    description: '';
   };
   options: {
-    draftAndPublish: false;
+    draftAndPublish: true;
   };
   attributes: {
     url: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
+    music: Schema.Attribute.Media<'audios'>;
+    instrument: Schema.Attribute.Media<'audios'>;
+    vocal: Schema.Attribute.Media<'audios'>;
     song: Schema.Attribute.Relation<'oneToOne', 'api::song.song'>;
-    instrument: Schema.Attribute.Media<'audios', true>;
-    vocal: Schema.Attribute.Media<'audios', true>;
-    transcript: Schema.Attribute.JSON;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -596,20 +594,18 @@ export interface ApiSongSong extends Struct.CollectionTypeSchema {
     singularName: 'song';
     pluralName: 'songs';
     displayName: 'Song';
-    description: '';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
+    name: Schema.Attribute.String;
     id_external: Schema.Attribute.String;
     explicit: Schema.Attribute.Boolean;
-    duration_ms: Schema.Attribute.BigInteger;
-    name: Schema.Attribute.String;
-    type: Schema.Attribute.String;
+    duration_ms: Schema.Attribute.Integer;
     artists: Schema.Attribute.Relation<'manyToMany', 'api::artist.artist'>;
-    music: Schema.Attribute.Relation<'oneToOne', 'api::music.music'>;
     album: Schema.Attribute.Relation<'oneToOne', 'api::album.album'>;
+    music: Schema.Attribute.Relation<'oneToOne', 'api::music.music'>;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;

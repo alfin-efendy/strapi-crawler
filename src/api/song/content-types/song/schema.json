@@ -4,14 +4,16 @@
   "info": {
     "singularName": "song",
     "pluralName": "songs",
-    "displayName": "Song",
-    "description": ""
+    "displayName": "Song"
   },
   "options": {
     "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
+    "name": {
+      "type": "string"
+    },
     "id_external": {
       "type": "string"
     },
@@ -19,13 +21,7 @@
       "type": "boolean"
     },
     "duration_ms": {
-      "type": "biginteger"
-    },
-    "name": {
-      "type": "string"
-    },
-    "type": {
-      "type": "string"
+      "type": "integer"
     },
     "artists": {
       "type": "relation",
@@ -33,16 +29,16 @@
       "target": "api::artist.artist",
       "inversedBy": "songs"
     },
+    "album": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::album.album"
+    },
     "music": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::music.music",
       "mappedBy": "song"
-    },
-    "album": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::album.album"
     }
   }
 }

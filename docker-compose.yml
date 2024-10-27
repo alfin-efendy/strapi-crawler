@@ -77,7 +77,7 @@ services:
       - "traefik.http.routers.strapi.entrypoints=websecure"
       - "traefik.http.routers.strapi.tls.certresolver=cloudflare"
       - "traefik.http.services.strapi.loadbalancer.server.port=1337"
-
+      - "com.centurylinklabs.watchtower.enable=true"
 
   watchtower:
     container_name: watchtower
@@ -85,7 +85,6 @@ services:
     image: containrrr/watchtower
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
-      - /root/.docker/config.json:/config.json
     command: --interval 30
 
 volumes:
